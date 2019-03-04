@@ -56,9 +56,9 @@ class mixer : public pdsp::Patchable {
         _parameters.add(_microphoneOutGain.set("gain MIC", -48, -48, 24));
         _parameters.add(_externalDeckAOutGain.set("gain EXT A", -48, -48, 24));
         _parameters.add(_deckAOutGain.set("gain A", 0, -48, 24));
-        _parameters.add(_deckBOutGain.set("gain B", 0, -48, 24));
+        _parameters.add(_deckBOutGain.set("gain B", -48, -48, 24));
         _parameters.add(_externalDeckBOutGain.set("gain EXT B", -48, -48, 24));
-        _parameters.add(_masterOutGain.set("gain MASTER", 24, -48, 24));
+        _parameters.add(_masterOutGain.set("gain MASTER", 0, -48, 24));
     }
 
     pdsp::DBtoLin _dBtoLinMicrophoneOut;
@@ -83,6 +83,10 @@ class mixer : public pdsp::Patchable {
     pdsp::Amp _rightMasterOutAmp;
     pdsp::Amp _leftMonitorOutAmp;
     pdsp::Amp _rightMonitorOutAmp;
+
+    // TODO: balance vs panning
+    // pdsp::Panner _masterPanner;
+    // pdsp::Panner _monitorPanner;
 
     ofParameterGroup _parameters;
     pdsp::Parameter _microphoneOutGain;    

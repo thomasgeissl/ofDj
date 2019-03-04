@@ -34,6 +34,7 @@ class deck : public pdsp::Patchable {
         _parameters.add(_smooth.set("fade ms", 0, 0, 50)); 
 
         _sample.setVerbose(true);
+        stop();
     }
     void update(){
         // auto pos = _leftSampler.meter_position();
@@ -56,6 +57,10 @@ class deck : public pdsp::Patchable {
     }
     void stop(){
         _envelopeGate.off();          
+    }
+
+    float playhead(){
+        return _leftSampler.meter_position();
     }
     pdsp::Amp _leftMasterOutAmp;
     pdsp::Amp _rightMasterOutAmp;

@@ -8,6 +8,9 @@
 #include "mixer.h"
 
 #include "ofxOsc.h"
+#include "ofxWidgets.h"
+#include "gui/waveForm.h"
+#include "gui/deck.h"
 
 class ofApp : public ofBaseApp{
 	public:
@@ -37,4 +40,6 @@ class ofApp : public ofBaseApp{
 		externalDeck *_externalDeckB;
 
 		ofxOscSender _oscSender;
+
+		ofxWidgets::gui _gui;
 };

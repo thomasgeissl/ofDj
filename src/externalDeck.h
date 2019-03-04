@@ -20,4 +20,5 @@ class externalDeck : public pdsp::Patchable {
     pdsp::Amp _rightMonitorOutAmp;
 
     ofParameterGroup _parameters;
+    pdsp::Parameter _masterOutGain;    
 };
