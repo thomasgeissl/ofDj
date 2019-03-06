@@ -42,4 +42,7 @@ class ofApp : public ofBaseApp{
 		ofxOscSender _oscSender;
 
 		ofxWidgets::gui _gui;
+
+		waveForm::pointer _waveFormA;
+		waveForm::pointer _waveFormB;
 };

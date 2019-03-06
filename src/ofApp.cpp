@@ -50,6 +50,10 @@ void ofApp::setup()
     _deckA->play();
     // _deckB->play();
 
+
+    auto faderWidth = 20;
+    auto faderHeight = 60;
+
     auto mainLayout = ofxWidgets::layout::hBox::create(_gui.getViewWidth(), _gui.getViewHeight());
     auto unitWidth = mainLayout->getViewWidth() / 13;
     auto unitHeight = mainLayout->getViewHeight();
@@ -57,36 +61,54 @@ void ofApp::setup()
     auto micWidget = ofxWidgets::widget::create(unitWidth, unitHeight);
     mainLayout->add(micWidget);
     auto micLayout = ofxWidgets::layout::vBox::createAndAddTo(micWidget);
+    micLayout->setOffset(10);
     micLayout->add(ofxWidgets::label::create("MIC", micLayout->getViewWidth(), 40));
-    micLayout->add(ofxWidgets::floatSlider::create(_microphone->_masterOutGain.getOFParameterFloat(), micLayout->getViewWidth(), 40, ofxWidgets::floatSlider::style::vertical));
+    micLayout->add(ofxWidgets::floatSlider::create(_microphone->_masterOutGain.getOFParameterFloat(), faderWidth, faderHeight, ofxWidgets::floatSlider::style::vertical));
+    micLayout->add(ofxWidgets::toggle::create("monitor", false, 60, 40));
 
     auto extDeckAWidget = ofxWidgets::widget::create(unitWidth, unitHeight);
     mainLayout->add(extDeckAWidget);
     auto extDeckALayout = ofxWidgets::layout::vBox::createAndAddTo(extDeckAWidget);
+    extDeckALayout->setOffset(10);
     extDeckALayout->add(ofxWidgets::label::create("EXT A", extDeckALayout->getViewWidth(), 40));
-    extDeckALayout->add(ofxWidgets::floatSlider::create(_externalDeckA->_masterOutGain.getOFParameterFloat(), extDeckALayout->getViewWidth(), 40, ofxWidgets::floatSlider::style::vertical));
+    extDeckALayout->add(ofxWidgets::floatSlider::create(_externalDeckA->_masterOutGain.getOFParameterFloat(), faderWidth, faderHeight, ofxWidgets::floatSlider::style::vertical));
+    extDeckALayout->add(ofxWidgets::toggle::create("monitor", false, 60, 40));
 
     auto deckAWidget = ofxWidgets::widget::create(unitWidth * 4, unitHeight);
     mainLayout->add(deckAWidget);
     auto deckALayout = ofxWidgets::layout::vBox::createAndAddTo(deckAWidget);
+    deckALayout->setOffset(10);
     deckALayout->add(ofxWidgets::label::create("A", deckALayout->getViewWidth(), 40));
+    deckALayout->add(ofxWidgets::floatSlider::create(_deckA->_masterOutGain.getOFParameterFloat(), faderWidth, faderHeight, ofxWidgets::floatSlider::style::vertical));
+    deckALayout->add(ofxWidgets::toggle::create("monitor", false, 60, 40));
+    _waveFormA = waveForm::create(deckALayout->getViewWidth(), 60);
+    deckALayout->add(_waveFormA);
 
     auto deckBWidget = ofxWidgets::widget::create(unitWidth * 4, unitHeight);
     mainLayout->add(deckBWidget);
     auto deckBLayout = ofxWidgets::layout::vBox::createAndAddTo(deckBWidget);
+    deckBLayout->setOffset(10);
     deckBLayout->add(ofxWidgets::label::create("B", deckBLayout->getViewWidth(), 40));
+    deckBLayout->add(ofxWidgets::floatSlider::create(_deckB->_masterOutGain.getOFParameterFloat(), faderWidth, faderHeight, ofxWidgets::floatSlider::style::vertical));
+    deckBLayout->add(ofxWidgets::toggle::create("monitor", false, 60, 40));
+    _waveFormB = waveForm::create(deckBLayout->getViewWidth(), 60);
+    deckBLayout->add(_waveFormB);
 
     auto extDeckBWidget = ofxWidgets::widget::create(unitWidth, unitHeight);
     mainLayout->add(extDeckBWidget);
     auto extDeckBLayout = ofxWidgets::layout::vBox::createAndAddTo(extDeckBWidget);
+    extDeckBLayout->setOffset(10);
     extDeckBLayout->add(ofxWidgets::label::create("EXT B", extDeckBLayout->getViewWidth(), 40));
-    extDeckBLayout->add(ofxWidgets::floatSlider::create(_externalDeckB->_masterOutGain.getOFParameterFloat(), extDeckBLayout->getViewWidth(), 40, ofxWidgets::floatSlider::style::vertical));
+    extDeckBLayout->add(ofxWidgets::floatSlider::create(_externalDeckB->_masterOutGain.getOFParameterFloat(), faderWidth, faderHeight, ofxWidgets::floatSlider::style::vertical));
+    extDeckBLayout->add(ofxWidgets::toggle::create("monitor", false, 60, 40));
 
     auto masterWidget = ofxWidgets::widget::create(unitWidth * 2, unitHeight);
     mainLayout->add(masterWidget);
     auto masterLayout = ofxWidgets::layout::vBox::createAndAddTo(masterWidget);
+    masterLayout->setOffset(10);
     masterLayout->add(ofxWidgets::label::create("MASTER", masterLayout->getViewWidth(), 40));
-    masterLayout->add(ofxWidgets::floatSlider::create(_mixer._masterOutGain.getOFParameterFloat(), masterLayout->getViewWidth(), 40, ofxWidgets::floatSlider::style::vertical));
+    masterLayout->add(ofxWidgets::floatSlider::create(_mixer._masterOutGain.getOFParameterFloat(), faderWidth, faderHeight, ofxWidgets::floatSlider::style::vertical));
+    masterLayout->add(ofxWidgets::toggle::create("monitor", false, 60, 40));
 
     _gui.add(mainLayout);
 
@@ -108,42 +130,6 @@ void ofApp::update()
 }
 void ofApp::draw()
 {
-    // auto channelWidth = ofGetWidth()/13;
-
-    // // MIC
-    // ofSetColor(ofColor::lightGrey);
-    // auto x = 0;
-    // ofDrawRectangle(x, 0, channelWidth, ofGetHeight());
-    // x += channelWidth;
-
-    // // EXT A
-    // ofSetColor(ofColor::lightBlue);
-    // ofDrawRectangle(x, 0, channelWidth, ofGetHeight());
-    // x += channelWidth;
-
-    // // A
-    // ofSetColor(ofColor::darkBlue);
-    // ofDrawRectangle(x, 0, channelWidth*4, ofGetHeight());
-    // _deckAWave._playhead = _deckA->playhead();
-    // _deckAWave.draw(x, 200, channelWidth*4, 100);
-    // x += channelWidth*4;
-
-    // // B
-    // ofSetColor(ofColor::darkRed);
-    // ofDrawRectangle(x, 0, channelWidth*4, ofGetHeight());
-    // _deckBWave._playhead = _deckB->playhead();
-    // _deckBWave.draw(x, 200, channelWidth*4, 100);
-    // x += channelWidth*4;
-
-    // // EXT B
-    // ofSetColor(ofColor::mistyRose);
-    // ofDrawRectangle(x, 0, channelWidth, ofGetHeight());
-    // x += channelWidth;
-
-    // // MASTER
-    // ofSetColor(ofColor::purple);
-    // ofDrawRectangle(x, 0, channelWidth*2, ofGetHeight());
-    // x += channelWidth;
 }
 
 void ofApp::keyPressed(int key) {}
@@ -155,8 +141,8 @@ void ofApp::keyReleased(int key)
         ofToggleFullscreen();
         break;
     case 'r':
-        // _deckAWave.setSample(_deckA->_sample);
-        // _deckBWave.setSample(_deckB->_sample);
+        _waveFormA->setSample(_deckA->_sample);
+        // _waveFormB->setSample(_deckB->_sample);
         break;
     default:
         break;

@@ -21,7 +21,7 @@ class deck : public pdsp::Patchable {
         _sampleTrigger >> _rightSampler >> _rightMasterOutAmp;
         _envelopeGate >> _envelope >> _rightMasterOutAmp.in_mod();
      
-        _outGain >> _dBtoLin  >> _leftMasterOutAmp.in_mod();
+        _masterOutGain >> _dBtoLin  >> _leftMasterOutAmp.in_mod();
         _dBtoLin  >> _rightMasterOutAmp.in_mod();
 
         _smooth >> _envelope.in_attack();
@@ -29,9 +29,9 @@ class deck : public pdsp::Patchable {
 
 
         _parameters.setName("deck");
-        _parameters.add(_outGain.set("gain", 24, -48, 24));
-        _parameters.add(_pitch.set("pitch", 0, -24, 24));
-        _parameters.add(_smooth.set("fade ms", 0, 0, 50)); 
+        _parameters.add(_masterOutGain.set("gain", 24.0, -48.0, 24.0));
+        _parameters.add(_pitch.set("pitch", 0.0, -24.0, 24.0));
+        _parameters.add(_smooth.set("fade ms", 0.0, 0.0, 50.0)); 
 
         _sample.setVerbose(true);
         stop();
@@ -80,7 +80,8 @@ class deck : public pdsp::Patchable {
 
 
     ofParameterGroup _parameters;
-    pdsp::Parameter _outGain;    
+    pdsp::Parameter _masterOutGain;    
     pdsp::Parameter _pitch;
     pdsp::Parameter _smooth;
+    ofParameter<bool> _monitor;
 };
